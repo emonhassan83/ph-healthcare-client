@@ -8,7 +8,7 @@ const Specialist = async () => {
     },
   });
   const { data: specialties } = await res.json();
-    console.log(specialties);
+  // console.log(specialties);
   return (
     <Container>
       <Box
@@ -69,7 +69,7 @@ const Specialist = async () => {
             </Box>
           ))}
         </Stack>
-        
+
         <Button
           variant="outlined"
           sx={{
