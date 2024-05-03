@@ -17,6 +17,7 @@ import { modifyPayload } from "@/utils/modifyPayload";
 import { registerPatient } from "@/services/actions/registerPatient";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { storeUserInfo } from "@/services/auth.services";
 
 interface IPatientData {
   name: string;
@@ -52,7 +53,7 @@ const RegisterPage = () => {
         //   email: values.patient.email,
         // });
         if (res?.data?.accessToken) {
-          // storeUserInfo({ accessToken: result?.data?.accessToken });
+          storeUserInfo({ accessToken: res?.data?.accessToken });
           router.push("/");
         }
       }
