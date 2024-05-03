@@ -18,6 +18,7 @@ import { registerPatient } from "@/services/actions/registerPatient";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { storeUserInfo } from "@/services/auth.services";
+import { userLogin } from "@/services/actions/userLogin";
 
 interface IPatientData {
   name: string;
@@ -40,7 +41,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm<IPatientRegisterFormData>();
 
-  const onSubmit: SubmitHandler<IPatientRegisterFormData> = async(values) => {
+  const onSubmit: SubmitHandler<IPatientRegisterFormData> = async (values) => {
     const data = modifyPayload(values);
     // console.log(data);
 
@@ -48,20 +49,20 @@ const RegisterPage = () => {
       const res = await registerPatient(data);
       if (res?.data?.id) {
         toast.success(res?.message);
-        // const result = await userLogin({
-        //   password: values.password,
-        //   email: values.patient.email,
-        // });
-        if (res?.data?.accessToken) {
+
+        const result = await userLogin({
+          password: values.password,
+          email: values.patient.email,
+        });
+
+        if (result?.data?.accessToken) {
           storeUserInfo({ accessToken: res?.data?.accessToken });
           router.push("/");
         }
       }
-      
     } catch (error: any) {
       console.error(error.message);
     }
-    
   };
 
   return (
