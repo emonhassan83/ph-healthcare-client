@@ -38,6 +38,7 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
+          
           <Box>
             <form>
               <Grid container spacing={2} my={1}>
