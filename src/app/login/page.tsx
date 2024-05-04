@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import assets from "@/assets";
 import Link from "next/link";
@@ -20,6 +12,13 @@ import { storeUserInfo } from "@/services/auth.services";
 import PHForm from "@/components/Forms/PHForm";
 import { useState } from "react";
 import PHInput from "@/components/Forms/PHInput";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+export const validationSchema = z.object({
+  email: z.string().email("Please enter a valid email address!"),
+  password: z.string().min(6, "Must be at least 6 characters"),
+});
 
 const LoginPage = () => {
   const router = useRouter();
@@ -76,9 +75,27 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
+          {/* show error massage */}
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  padding: "1px",
+                  borderRadius: "3px",
+                  color: "#A94064",
+                  marginTop: "5px",
+                  fontWeight: "700",
+                }}
+              >
+                {error}!
+              </Typography>
+            </Box>
+          )}
+
           <Box>
             <PHForm
               onSubmit={handleLogin}
+              resolver={zodResolver(validationSchema)}
               defaultValues={{
                 email: "",
                 password: "",
