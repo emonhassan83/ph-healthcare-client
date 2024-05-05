@@ -56,10 +56,10 @@ export default function DashboardDrawer({children}: {children: React.ReactNode})
             <MenuIcon />
           </IconButton>
           <Box>
-          <Typography variant="body2" nowrap component="div" color="gray">
+          <Typography variant="body2" component="div" color="gray">
             Hi, Emon Hassan
           </Typography>
-          <Typography variant="body2" nowrap component="div" color="primary.main">
+          <Typography variant="body2" component="div" color="primary.main">
            Welcome to PH Health Care!
           </Typography>
           </Box>
