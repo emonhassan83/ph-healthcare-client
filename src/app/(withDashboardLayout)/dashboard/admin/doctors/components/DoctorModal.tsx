@@ -18,15 +18,14 @@ const DoctorModal = ({ open, setOpen }: TProps) => {
   const [createDoctor] = useCreateDoctorMutation();
 
   const handleFormSubmit = async (values: FieldValues) => {
-    // console.log(values);
-    values.doctor.experience = Number(values.doctor.experience);
-    values.doctor.apointmentFee = Number(values.doctor.apointmentFee);
+      values.doctor.experience = Number(values.doctor.experience);
+      values.doctor.appointmentFee = Number(values.doctor.appointmentFee);
     const data = modifyPayload(values);
 
     try {
       const res = await createDoctor(data).unwrap();
       console.log(res);
-      if (res?.data) {
+      if (res?.id) {
         toast.success("Doctor created successfully!!!");
         setOpen(false);
       }
@@ -44,7 +43,7 @@ const DoctorModal = ({ open, setOpen }: TProps) => {
       registrationNumber: "",
       gender: "",
       experience: 0,
-      apointmentFee: 0,
+      appointmentFee: 0,
       qualification: "",
       currentWorkingPlace: "",
       designation: "",
@@ -128,9 +127,9 @@ const DoctorModal = ({ open, setOpen }: TProps) => {
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PHInput
-              name="doctor.apointmentFee"
+              name="doctor.appointmentFee"
               type="number"
-              label="ApointmentFee"
+              label="appointmentFee"
               fullWidth={true}
               sx={{ mb: 2 }}
             />
