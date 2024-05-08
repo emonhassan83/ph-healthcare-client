@@ -3,6 +3,8 @@ import { FieldValues } from "react-hook-form";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
 import PHFullScreenModal from "@/components/Shared/PHModal/PHFullScreenModal";
+import PHSelectField from "@/components/Forms/PHSelectField";
+import { Gender } from "@/types";
 
 type TProps = {
   open: boolean;
@@ -95,14 +97,14 @@ const DoctorModal = ({ open, setOpen }: TProps) => {
               sx={{ mb: 2 }}
             />
           </Grid>
-          {/* <Grid item xs={12} sm={12} md={4}>
+          <Grid item xs={12} sm={12} md={4}>
             <PHSelectField
-              items={""}
+              items={Gender}
               name="doctor.gender"
               label="Gender"
               sx={{ mb: 2 }}
             />
-          </Grid> */}
+          </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PHInput
               name="doctor.apointmentFee"
