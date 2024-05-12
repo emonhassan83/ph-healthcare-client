@@ -75,7 +75,7 @@ const SpecialtiesPage = () => {
       {!isLoading ? (
         <Box my={2}>
           <DataGrid
-            rows={data?.data}
+            rows={data}
             columns={columns}
             initialState={{
               pagination: {
