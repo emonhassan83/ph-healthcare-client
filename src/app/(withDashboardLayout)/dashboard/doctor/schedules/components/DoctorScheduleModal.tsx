@@ -6,6 +6,8 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useGetAllSchedulesQuery } from "@/redux/api/scheduleApi";
 import { Stack } from "@mui/material";
+import MultipleSelectFieldChip from "./MultipleSelectFieldChip";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type TProps = {
   open: boolean;
@@ -59,6 +61,21 @@ const DoctorScheduleModal = ({ open, setOpen }: TProps) => {
             sx={{ width: "100%" }}
           />
         </LocalizationProvider>
+        <MultipleSelectFieldChip
+               schedules={schedules}
+               selectedScheduleIds={selectedScheduleIds}
+               setSelectedScheduleIds={setSelectedScheduleIds}
+            />
+
+        <LoadingButton
+               size='small'
+               onClick={onSubmit}
+               loading={true}
+               loadingIndicator='Submitting...'
+               variant='contained'
+            >
+               <span>Submit</span>
+            </LoadingButton>
       </Stack>
     </PHModal>
   );
