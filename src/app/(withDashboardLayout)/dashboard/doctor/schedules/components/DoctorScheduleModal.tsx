@@ -7,7 +7,9 @@ import { useState } from "react";
 import { useGetAllSchedulesQuery } from "@/redux/api/scheduleApi";
 import { Stack } from "@mui/material";
 import MultipleSelectFieldChip from "./MultipleSelectFieldChip";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useCreateDoctorScheduleMutation } from "@/redux/api/doctorScheduleApi";
+import { toast } from "sonner";
 
 type TProps = {
   open: boolean;
@@ -39,13 +41,23 @@ const DoctorScheduleModal = ({ open, setOpen }: TProps) => {
 
   const { data } = useGetAllSchedulesQuery(query);
   const schedules = data?.schedules;
-  
-  //    const [createDoctorSchedule, { isLoading }] =
-  //       useCreateDoctorScheduleMutation();
 
-  //    console.log(selectedScheduleIds);
+  const [createDoctorSchedule, { isLoading }] =
+    useCreateDoctorScheduleMutation();
 
   const onSubmit = async () => {
+    try {
+        const res = await createDoctorSchedule({
+           scheduleIds: selectedScheduleIds,
+        });
+
+        if ((res as { data?: any })?.data?.count) {
+          toast.success("Doctor Cerate Schedule successfully!")
+        }
+        setOpen(false);
+     } catch (error: any) {
+        console.log(error);
+     }
   };
 
   return (
@@ -62,20 +74,20 @@ const DoctorScheduleModal = ({ open, setOpen }: TProps) => {
           />
         </LocalizationProvider>
         <MultipleSelectFieldChip
-               schedules={schedules}
-               selectedScheduleIds={selectedScheduleIds}
-               setSelectedScheduleIds={setSelectedScheduleIds}
-            />
+          schedules={schedules}
+          selectedScheduleIds={selectedScheduleIds}
+          setSelectedScheduleIds={setSelectedScheduleIds}
+        />
 
         <LoadingButton
-               size='small'
-               onClick={onSubmit}
-               loading={true}
-               loadingIndicator='Submitting...'
-               variant='contained'
-            >
-               <span>Submit</span>
-            </LoadingButton>
+          size="small"
+          onClick={onSubmit}
+          loading={isLoading}
+          loadingIndicator="Submitting..."
+          variant="contained"
+        >
+          <span>Submit</span>
+        </LoadingButton>
       </Stack>
     </PHModal>
   );
