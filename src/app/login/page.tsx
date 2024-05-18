@@ -5,7 +5,7 @@ import Image from "next/image";
 import assets from "@/assets";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
@@ -31,7 +31,7 @@ const LoginPage = () => {
       if (res?.data?.accessToken) {
         toast.success(res?.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
-        router.push("/dashboard");
+        // router.push("/dashboard");
       } else {
         setError(res.message);
         // console.log(res);
