@@ -26,7 +26,7 @@ const ChangePassword = () => {
       const res = await changePassword(values);
       //* if change password then logout user
       if ("data" in res && res.data.status === 200) {
-        logoutUser(router);
+        logoutUser(router); //* when password change then logout user
         toast.success("Password Changed Successfully");
       } else {
         throw new Error("Incorrect Old Password!");
