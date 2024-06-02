@@ -22,16 +22,16 @@ const validationSchema = z.object({
 const ResetPassword = () => {
    const searchParams = useSearchParams();
    const id = searchParams.get('userId');
-   const accessToken = searchParams.get('token');
+   const token = searchParams.get('token');
 //    console.log({ id, token });
    const router = useRouter();
 
    const [resetPassword] = useResetPasswordMutation();
 
    useEffect(() => {
-      if (!accessToken) return;
-      localStorage.setItem(authKey, accessToken);
-   }, []);
+      if (!token) return;
+      localStorage.setItem(authKey, token);
+   }, [token]);
 
    const onSubmit = async (values: FieldValues) => {
     //   console.log(values);
