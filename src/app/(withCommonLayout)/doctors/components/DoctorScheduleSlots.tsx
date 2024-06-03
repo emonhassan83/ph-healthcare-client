@@ -1,22 +1,28 @@
 'use client';
 
 import { getTimeIn12HourFormat } from '@/app/(withDashboardLayout)/dashboard/doctor/schedules/components/MultipleSelectFieldChip';
+import { useCreateAppointmentMutation } from '@/redux/api/appointmentApi';
 import { useGetAllDoctorSchedulesQuery } from '@/redux/api/doctorScheduleApi';
+import { useInitialPaymentMutation } from '@/redux/api/paymentApi';
 import { DoctorSchedule } from '@/types/doctorSchedules';
 import { dateFormatter } from '@/utils/dateFormatter';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 dayjs.extend(utc);
 
 const DoctorScheduleSlots = ({ id }: { id: string }) => {
    const [scheduleId, setScheduleId] = useState('');
+   const [createAppointment] = useCreateAppointmentMutation();
+   const [initialPayment] = useInitialPaymentMutation();
+   const router = useRouter();
 
    const query: Record<string, any> = {};
    query['doctorId'] = id;
 
-   query['startDate'] = dayjs(new Date())
+   query['startDateTime'] = dayjs(new Date())
       .utc()
       .hour(0)
       .minute(0)
@@ -24,7 +30,7 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
       .millisecond(0)
       .toISOString();
 
-   query['endDate'] = dayjs(new Date())
+   query['endDateTime'] = dayjs(new Date())
       .utc()
       .hour(23)
       .minute(59)
@@ -35,7 +41,7 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
    const { data, isLoading } = useGetAllDoctorSchedulesQuery({ ...query });
    const doctorSchedules = data?.doctorSchedules;
 
-   console.log(doctorSchedules);
+//    console.log(data);
 
    const currentDate = new Date();
    const today = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
@@ -44,7 +50,26 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
       (doctor: DoctorSchedule) => !doctor.isBooked
    );
 
-   const handleBookAppointment = async () => {};
+   const handleBookAppointment = async () => {
+      try {
+         if (id && scheduleId) {
+            const res = await createAppointment({
+               doctorId: id,
+               scheduleId,
+            }).unwrap();
+
+            if (res.id) {
+               const response = await initialPayment(res.id).unwrap();
+
+               if (response.paymentUrl) {
+                  router.push(response.paymentUrl);
+               }
+            }
+         }
+      } catch (error) {
+         console.log(error);
+      }
+   };
 
    return (
       <Box mb={5}>
@@ -66,9 +91,9 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
                   ) : (
                      availableSlots?.map((doctorSchedule: DoctorSchedule) => {
                         const formattedTimeSlot = `${getTimeIn12HourFormat(
-                           doctorSchedule?.schedule?.startDate
+                           doctorSchedule?.schedule?.startDateTime
                         )} - ${getTimeIn12HourFormat(
-                           doctorSchedule?.schedule?.endDate
+                           doctorSchedule?.schedule?.endDateTime
                         )}`;
 
                         return (
