@@ -1,5 +1,6 @@
 import DashedLine from "@/components/UI/Doctor/DashedLine";
 import DoctorCard from "@/components/UI/Doctor/DoctorCard";
+import ScrollCategory from "@/components/UI/Doctor/ScrollCategory";
 import { Doctor } from "@/types/doctor";
 import { Box, Container } from "@mui/material";
 import React from "react";
@@ -9,47 +10,38 @@ interface PropType {
 }
 
 const Doctors = async ({ searchParams }: PropType) => {
-  const res = await fetch("http://localhost:5000/api/v1/doctor");
+  let res;
+
+  if (searchParams.specialties) {
+    res = await fetch(
+      `http://localhost:5000/api/v1/doctor?specialties=${searchParams.specialties}`
+    );
+  } else {
+    res = await fetch("http://localhost:5000/api/v1/doctor");
+  }
   const { data } = await res.json();
 
-  console.log(data);
+  // console.log(data);
+  // console.log(searchParams);
+
   return (
     <Container>
+      <DashedLine />
+      <ScrollCategory specialties={searchParams.specialties} />
       <Box
         sx={{
-          borderBottom: "2px dashed",
-          borderColor: "secondary",
-          my: 4,
+          mt: 2,
+          p: 3,
+          bgcolor: "secondary.light",
         }}
       >
-        <Box
-          sx={{
-            mt: 2,
-            p: 3,
-            bgcolor: "secondary.light",
-          }}
-        >
-          {data.map((doctor: Doctor, index: number) => (
-            <Box key={doctor.id}>
-               <DoctorCard doctor={doctor}/>
-               {index === data.length - 1 ? null : <DashedLine />}
-            </Box>
-          ))}
-        </Box>
+        {data.map((doctor: Doctor, index: number) => (
+          <Box key={doctor.id}>
+            <DoctorCard doctor={doctor} />
+            {index === data.length - 1 ? null : <DashedLine />}
+          </Box>
+        ))}
       </Box>
-      {/* <DashedLine />
-
-         <ScrollCategory specialties={searchParams.specialties} />
-
-         <Box sx={{ mt: 2, p: 3, bgcolor: 'secondary.light' }}>
-            {data?.map((doctor: Doctor, index: number) => (
-               <Box key={doctor.id}>
-                  <DoctorCard doctor={doctor} />
-
-                  {index === data.length - 1 ? null : <DashedLine />}
-               </Box>
-            ))}
-         </Box> */}
     </Container>
   );
 };
