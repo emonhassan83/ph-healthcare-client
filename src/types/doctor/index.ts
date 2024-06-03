@@ -8,7 +8,7 @@ export interface Doctor {
   registrationNumber: string;
   experience: number;
   gender: 'MALE' | 'FEMALE' | 'OTHER';
-  apointmentFee: number;
+  appointmentFee: number;
   qualification: string;
   currentWorkingPlace: string;
   designation: string;
@@ -23,7 +23,7 @@ export interface Doctor {
 export interface DoctorSpecialty {
   specialtiesId: string;
   doctorId: string;
-  specialties: any; // You may want to specify the structure of the specialties object if known
+  specialities: any; // You may want to specify the structure of the specialties object if known
 }
 
 export interface IDoctor {

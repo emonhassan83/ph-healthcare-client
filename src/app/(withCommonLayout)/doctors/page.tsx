@@ -1,3 +1,5 @@
+import DashedLine from "@/components/UI/Doctor/DashedLine";
+import DoctorCard from "@/components/UI/Doctor/DoctorCard";
 import { Doctor } from "@/types/doctor";
 import { Box, Container } from "@mui/material";
 import React from "react";
@@ -11,13 +13,12 @@ const Doctors = async ({ searchParams }: PropType) => {
   const { data } = await res.json();
 
   console.log(data);
-
   return (
     <Container>
       <Box
         sx={{
           borderBottom: "2px dashed",
-          borderColor: "secondary.light",
+          borderColor: "secondary",
           my: 4,
         }}
       >
@@ -25,12 +26,13 @@ const Doctors = async ({ searchParams }: PropType) => {
           sx={{
             mt: 2,
             p: 3,
-            bgcolor: "secondary.50",
+            bgcolor: "secondary.light",
           }}
         >
-          {data.map((doctor: Doctor) => (
+          {data.map((doctor: Doctor, index: number) => (
             <Box key={doctor.id}>
-
+               <DoctorCard doctor={doctor}/>
+               {index === data.length - 1 ? null : <DashedLine />}
             </Box>
           ))}
         </Box>
