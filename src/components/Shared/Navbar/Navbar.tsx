@@ -19,41 +19,63 @@ const Navbar = () => {
     logoutUser(router);
  };
 
-  return (
-    <Container>
+ return (
+   <Box
+      sx={{
+         bgcolor: 'primary.main',
+      }}
+   >
+      <Container>
          <Stack
             py={2}
             direction='row'
             justifyContent='space-between'
             alignItems='center'
          >
-            <Typography variant='h5' component={Link} href='/' fontWeight={600}>
+            <Typography
+               variant='h5'
+               component={Link}
+               href='/'
+               fontWeight={600}
+            >
                P
-               <Box component='span' color='primary.main'>
+               <Box component='span' color='#ffffff'>
                   H
                </Box>{' '}
                Health Care
             </Typography>
 
             <Stack direction='row' justifyContent='space-between' gap={4}>
-               <Typography component={Link} href='/consultation'>
+               <Typography
+                  component={Link}
+                  href='/consultation'
+                  color='#ffffff'
+               >
                   Consultation
                </Typography>
 
-               <Typography>Diagnostics</Typography>
-               <Typography component={Link} href='/doctors'>
+               <Typography color='#ffffff'>Diagnostics</Typography>
+               <Typography component={Link} href='/doctors' color='#ffffff'>
                   Doctors
                </Typography>
 
-               {userInfo?.email ? (
-                  <Typography component={Link} href='/dashboard'>
+               {userInfo?.userId ? (
+                  <Typography
+                     component={Link}
+                     href='/dashboard'
+                     color='#ffffff'
+                  >
                      Dashboard
                   </Typography>
                ) : null}
             </Stack>
 
-            {userInfo?.email ? (
-               <Button color='error' onClick={handleLogOut}>
+            {userInfo?.userId ? (
+               <Button
+                  color='error'
+                  onClick={handleLogOut}
+                  sx={{ boxShadow: 0 }}
+               >
                   Logout
                </Button>
             ) : (
@@ -63,7 +85,8 @@ const Navbar = () => {
             )}
          </Stack>
       </Container>
-  );
+   </Box>
+);
 };
 
 export default Navbar;
