@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-// import AgoraUIKit from 'agora-react-uikit';
+import AgoraUIKit from 'agora-react-uikit';
 import { Button, Stack } from '@mui/material';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import Image from 'next/image';
@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 
 const VideoCall = ({ videoCallingId }: { videoCallingId: string }) => {
    const [startVideoCall, setStartVideoCall] = useState(false);
-
    const router = useRouter();
 
    const rtcProps = {
@@ -26,7 +25,7 @@ const VideoCall = ({ videoCallingId }: { videoCallingId: string }) => {
    };
    return startVideoCall ? (
       <div style={{ display: 'flex', width: '100vw', height: '100vh' }}>
-         {/* <AgoraUIKit rtcProps={rtcProps} callbacks={callbacks} /> */}
+         <AgoraUIKit rtcProps={rtcProps} callbacks={callbacks} />
       </div>
    ) : (
       <Stack

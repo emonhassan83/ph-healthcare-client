@@ -15,8 +15,6 @@ const PatientAppointmentsPage = () => {
    const meta = data?.meta;
 //    console.log(appointments);
    
-   
-
    const columns: GridColDef[] = [
       {
          field: 'name',

@@ -6,7 +6,11 @@ import type { NextRequest } from "next/server";
 type Role = keyof typeof roleBasedPrivateRoutes;
 
 const AuthRoutes = ["/login", "/register"];
-const commonPrivateRoutes = ["/dashboard", "/dashboard/change-password"];
+const commonPrivateRoutes = [
+  "/dashboard",
+  "/dashboard/change-password",
+  "/doctors",
+];
 const roleBasedPrivateRoutes = {
   PATIENT: [/^\/dashboard\/patient/],
   DOCTOR: [/^\/dashboard\/doctor/],
@@ -30,9 +34,13 @@ export function middleware(request: NextRequest) {
   }
 
   //* if access token is exists then access all routes
-  if (accessToken && commonPrivateRoutes.includes(pathname)) {
+  if (
+    accessToken &&
+    (commonPrivateRoutes.includes(pathname) ||
+       commonPrivateRoutes.some((route) => pathname.startsWith(route)))
+ ) {
     return NextResponse.next();
-  }
+ }
 
   //* redirect on role based private routes
   let decodedData = null;
@@ -59,5 +67,5 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/login", "/register", "/dashboard/:page*"],
+  matcher: ["/login", "/register", "/dashboard/:page*", "/doctors/:page*"],
 };
